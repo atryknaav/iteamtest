@@ -18,7 +18,7 @@ type JobData = {
     }
 }
 
-const ProductCard: React.FC<JobData> = ({ data }) => {
+const JobCard: React.FC<JobData> = ({ data }) => {
     const { job_title, employer_logo, employer_name, job_min_salary, job_max_salary, job_posted_at_datetime_utc, job_city, job_state, job_id } = data;
 
     const [liked, setLiked] = useState<boolean>(false);
@@ -109,4 +109,4 @@ const ProductCard: React.FC<JobData> = ({ data }) => {
     );
 };
 
-export default ProductCard;
+export default JobCard;

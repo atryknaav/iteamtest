@@ -6,6 +6,7 @@ import { jobData } from '../../jobs/data';
 import useSWR from 'swr';
 import { fetcher } from '@/hooks/useJobDetails';
 import { usePathname } from 'next/navigation';
+import Header from '@/components/Header';
 
 type JobData = {
     employer_name: string;
@@ -41,12 +42,14 @@ interface Props {
 
 const Home = ({ params }: { params: { id: string }}) => {
     const {id} = params
-  
-  const { data, error, isLoading } = useSWR(id, fetcher);
-  console.log(data)
-  if (isLoading) return <div>wait</div>
+  const decodedId = decodeURIComponent(id);
+
+  const { data, error, isLoading } = useSWR(decodedId, fetcher);
+ console.log(decodeURIComponent(id))
+ console.log(data)
   if (error) return <div>{error.message}</div>
-  if (!data) return <div>...</div>
+  if (isLoading || !data) return <div>{decodedId}</div>;
+
 
   const {
       job_title,
@@ -77,87 +80,70 @@ const Home = ({ params }: { params: { id: string }}) => {
     
 
     return (
-        <div className=" m-3 max-w-3xl mx-auto p-6 bg-stone-800 shadow-md rounded-lg text-white">
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                    {employer_logo ? (
-                        <img src={employer_logo} alt={`${employer_name} logo`} className="h-20 w-20 rounded-full" />
-                    ) : (
-                        <div className="h-20 w-20 bg-stone-800 rounded-full"></div>
-                    )}
-                    <div>
-                        <h2 className="text-3xl font-bold">{job_title}</h2>
-                        <p className="text-gray-200">{employer_name}</p>
-                        <p className="text-gray-100 text-sm">{employer_company_type}</p>
+        <div className='flex flex-col'>
+            <Header />
+            <div className=" m-3 max-w-3xl mx-auto p-6 bg-stone-800 shadow-md rounded-lg text-white">
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                        {employer_logo ? (
+                            <img src={employer_logo} alt={`${employer_name} logo`} className="h-20 w-20" />
+                        ) : (
+                            <div className="h-20 w-20 bg-stone-800 rounded-full"></div>
+                        )}
+                        <div>
+                            <h2 className="text-3xl font-bold">{job_title}</h2>
+                            <p className="text-gray-200">{employer_name}</p>
+                            <p className="text-gray-100 text-sm">{employer_company_type}</p>
+                        </div>
+                    </div>
+                    <div className="text-right text-gray-100">
+                        <p>Posted on {new Date(job_posted_at_datetime_utc).toLocaleDateString()}</p>
+                        <p>Expires on {new Date(job_offer_expiration_datetime_utc).toLocaleDateString()}</p>
                     </div>
                 </div>
-                <div className="text-right text-gray-100">
-                    <p>Posted on {new Date(job_posted_at_datetime_utc).toLocaleDateString()}</p>
-                    <p>Expires on {new Date(job_offer_expiration_datetime_utc).toLocaleDateString()}</p>
-                </div>
-            </div>
 
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-2">Job Details</h3>
-                <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2">
-                        <FaMapMarkerAlt className="text-gray-100" />
-                        <span className="text-gray-400">{job_city}, {job_state}, {job_country}</span>
-                    </div>
+                <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-2">Job Details</h3>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-2">
+                            <FaMapMarkerAlt className="text-gray-100" />
+                            <span className="text-gray-400">{job_city}, {job_state}, {job_country}</span>
+                        </div>
 
-                    <div className="flex items-center gap-2">
-                        <FaDollarSign className="text-gray-100" />
-                        <span className="text-gray-400">
-                            {job_min_salary && job_max_salary
-                                ? `${job_salary_currency} ${job_min_salary.toLocaleString()} - ${job_max_salary.toLocaleString()} per ${job_salary_period.toLowerCase()}`
-                                : 'Salary not provided'}
-                        </span>
-                    </div>
+                        <div className="flex items-center gap-2">
+                            <FaDollarSign className="text-gray-100" />
+                            <span className="text-gray-400">
+                                {job_min_salary && job_max_salary
+                                    ? `${job_salary_currency} ${job_min_salary.toLocaleString()} - ${job_max_salary.toLocaleString()} per ${job_salary_period.toLowerCase()}`
+                                    : 'Salary not provided'}
+                            </span>
+                        </div>
 
-                    <div className="flex items-center gap-2">
-                        <FaBriefcase className="text-gray-100" />
-                        <span className="text-gray-400">{job_employment_type}</span>
-                    </div>
+                        <div className="flex items-center gap-2">
+                            <FaBriefcase className="text-gray-100" />
+                            <span className="text-gray-400">{job_employment_type}</span>
+                        </div>
 
-                    <div className="flex items-center gap-2">
-                        <FaRegClock className="text-gray-100" />
-                        <span className="text-gray-400">{job_is_remote ? 'Remote' : 'On-site'}</span>
+                        <div className="flex items-center gap-2">
+                            <FaRegClock className="text-gray-100" />
+                            <span className="text-gray-400">{job_is_remote ? 'Remote' : 'On-site'}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-2">Job Description</h3>
-                <p className="text-gray-400">{job_description}</p>
-            </div>
-
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-2">Requirements</h3>
-                <div className="flex flex-col gap-2">
-                    <div>
-                        <strong>Experience:</strong> <span className="text-gray-400">{job_required_experience[0]}</span>
-                    </div>
-                    <div>
-                        <strong>Skills:</strong> <span className="text-gray-400">{job_required_skills}</span>
-                    </div>
-                    <div>
-                        <strong>Education:</strong> <span className="text-gray-400">{job_required_education[0]}</span>
-                    </div>
+                <div className="mb-6">
+                    <h3 className="text-xl font-semibold mb-2">Job Description</h3>
+                    <p className="text-gray-400">{job_description}</p>
                 </div>
-            </div>
 
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-2">Benefits</h3>
-                <p className="text-gray-400">{job_benefits}</p>
-            </div>
-
-            <div className="flex justify-between items-center mt-6">
-                <a href={employer_website} target="_blank" className="text-blue-200 hover:underline">
-                    <FaGlobe className="inline mr-1" /> Visit Company Website
-                </a>
-                <a href={job_apply_link} target="_blank" className="bg-orange-700 text-white py-2 px-4 rounded-md hover:bg-orange-800 transition-all">
-                    Apply Now
-                </a>
+                <div className="flex justify-between items-center mt-6">
+                    <a href={employer_website} target="_blank" className="text-blue-200 hover:underline">
+                        <FaGlobe className="inline mr-1" /> Visit Company Website
+                    </a>
+                    <a href={job_apply_link} target="_blank" className="bg-orange-700 text-white py-2 px-4 rounded-md hover:bg-orange-800 transition-all">
+                        Apply Now
+                    </a>
+                </div>
             </div>
         </div>
     );
