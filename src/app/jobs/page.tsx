@@ -4,7 +4,8 @@ import useSWR from "swr";
 import { SWRProvider } from "../swr-provider";
 import JobCard from "@/components/JobCard";
 import { useState, useEffect } from "react";
-import { jobData } from "./data";
+import Header from "@/components/Header";
+
 
 export default function Home() {
   const [query, setQuery] = useState(''); 
@@ -20,10 +21,11 @@ export default function Home() {
 
   return (
     <SWRProvider>
+      <Header />
       <div className="min-h-screen p-4 bg-stone-900">
         <div className="w-[40%] mx-auto">
        
-          <div className="mb-6 ">
+          <div className="mb-6 flex gap-6 items-center">
             <input
               type="text"
               defaultValue={query}
@@ -31,7 +33,7 @@ export default function Home() {
               placeholder="Search for a job title..."
               className="w-full p-3 border-0 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-700 bg-stone-800 caret-red-100 text-white placeholder-zinc-400 focus:placeholder-transparent"
             />
-            <button className="bg-sky-700 text-white mt-2 px-4 py-2 rounded-md" onClick={handleSearch}>
+            <button className="bg-orange-500 h-full text-white px-4 py-2 rounded-md" onClick={handleSearch}>
               Search
             </button>
             
