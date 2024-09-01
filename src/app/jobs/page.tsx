@@ -33,7 +33,7 @@ export default function Home() {
     setSearchQuery(query);
   };
 
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div className="text-white">Error: {error.message}</div>;
 
   return (
     <SWRProvider>
@@ -55,7 +55,7 @@ export default function Home() {
             
           </div>
 
-          {isLoading ? <div>Wait a minute please...</div> :
+          {isLoading ? <div className="text-white">Loading...</div> :
           <div className="flex flex-col gap-6">
             {
               searchQuery === '' ? 

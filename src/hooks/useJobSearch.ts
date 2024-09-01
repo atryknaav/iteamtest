@@ -15,7 +15,7 @@ export const fetcher = async (query: string) => {
             date_posted: 'all'
         },
         headers: {
-          'x-rapidapi-key': '0bfc331a3emshcb4a933405c18f7p147a38jsne9a3ab41a583',
+          'x-rapidapi-key': process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
           'x-rapidapi-host': 'jsearch.p.rapidapi.com',
         },
       });
