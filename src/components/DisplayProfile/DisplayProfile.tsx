@@ -20,7 +20,7 @@ const DisplayProfile = (props: Props) => {
             setDesiredJob(profileData.desiredJob);
             setAbout(profileData.about);
         }
-    }, [setStoredProfile])
+    }, [storedProfile])
 
     return (
         <div className="bg-stone-800 p-6 rounded-lg shadow-lg text-white">
@@ -47,7 +47,7 @@ const DisplayProfile = (props: Props) => {
                     </button>
                 </div>
             :
-            <ProfileForm setStoredProfile={setStoredProfile} storedProfile={storedProfile} edit/>
+            <ProfileForm setStoredProfile={setStoredProfile} storedProfile={storedProfile} edit setEdit={setEdit}/>
             
             }
         </div>

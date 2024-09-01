@@ -5,13 +5,29 @@ import { SWRProvider } from "../swr-provider";
 import JobCard from "@/components/JobCard";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
+import RecommendedJobs from "@/components/RecommendedJobs";
 
+export interface Profile {
+  name: string;
+  desiredJob: string;
+  about: string;
+}
 
 export default function Home() {
   const [query, setQuery] = useState(''); 
   const [searchQuery, setSearchQuery] = useState('');
+  const [desiredJob, setDesiredJob] = useState<string | null>(null);
 
   const { data, error, isLoading } = useSWR(searchQuery, fetcher);
+
+  useEffect(() => {
+    const profileString = localStorage.getItem('profile');
+    if (profileString) {
+        const profile: Profile = JSON.parse(profileString);
+        setDesiredJob(profile.desiredJob);
+    }
+}, []);
+
 
   const handleSearch = () => {
     setSearchQuery(query);
@@ -41,6 +57,11 @@ export default function Home() {
 
           {isLoading ? <div>Wait a minute please...</div> :
           <div className="flex flex-col gap-6">
+            {
+              searchQuery === '' ? 
+              <RecommendedJobs />
+              : ''
+            }
             {data?.data.map((job: any, index: number) => (
               <div key={index} className="bg-stone-800 text-white rounded-lg shadow-md p-4">
                 <JobCard

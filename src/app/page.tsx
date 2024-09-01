@@ -10,8 +10,9 @@ export default function Home() {
         <div>
           Welcome! 
         </div>
+        <hr className=" border-[1px] border-stone-200 w-[15%]"/>
         <Link href={'/jobs'}>
-          <button className=" text-stone-400 border-stone-400 border-x-0 border-t-0 border-b-2 p-3 text-xl">
+          <button className=" text-white rounded-md font-semibold border-0 bg-orange-700 p-3 text-xl shadow-md hover:bg-orange-800 transition-colors">
             Let's find you a new job together!
           </button>
         </Link>

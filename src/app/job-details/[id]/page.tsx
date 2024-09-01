@@ -114,7 +114,7 @@ const Home = ({ params }: { params: { id: string }}) => {
                             <FaDollarSign className="text-gray-100" />
                             <span className="text-gray-400">
                                 {job_min_salary && job_max_salary
-                                    ? `${job_salary_currency} ${job_min_salary.toLocaleString()} - ${job_max_salary.toLocaleString()} per ${job_salary_period.toLowerCase()}`
+                                    ? `${job_min_salary} - ${job_max_salary} ${job_salary_period? ` per ${job_salary_period}` : ''}`
                                     : 'Salary not provided'}
                             </span>
                         </div>
