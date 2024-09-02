@@ -58,7 +58,7 @@ export default function Home() {
           {isLoading ? <div className="text-white">Loading...</div> :
           <div className="flex flex-col gap-6">
             {
-              searchQuery === '' ? 
+              searchQuery === '' && desiredJob ? 
               <RecommendedJobs />
               : ''
             }
