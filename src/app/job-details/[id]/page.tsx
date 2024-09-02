@@ -45,10 +45,9 @@ const Home = ({ params }: { params: { id: string }}) => {
   const decodedId = decodeURIComponent(id);
 
   const { data, error, isLoading } = useSWR(decodedId, fetcher);
- console.log(decodeURIComponent(id))
- console.log(data)
-  if (error) return <div>{error.message}</div>
-  if (isLoading || !data) return <div>{decodedId}</div>;
+
+  if (error) return <div className='text-white'>{error.message}</div>
+  if (isLoading || !data) return <div className=' text-white'>Loading</div>;
 
 
   const {
